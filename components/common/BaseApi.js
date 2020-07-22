@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const BaseApi = ({urlPrefix = '/api/v1/', collectionName = '', data}) => {
-  // var baseURL = 'http://192.168.1.93:8678' + urlPrefix + collectionName;
-  var baseURL = 'http://wiup.net/workup' + urlPrefix + collectionName;
+  var baseURL = 'http://192.168.1.109:8678' + urlPrefix + collectionName;
+  // var baseURL = 'http://wiup.net/workup' + urlPrefix + collectionName;
   var method = {
     // baseURL : function(){
     //     return  'http://192.168.1.14:8678'+urlPrefix+collectionName
