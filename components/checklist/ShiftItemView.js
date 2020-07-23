@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  DeviceEventEmitter,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {setShift, removeShift} from 'store/checklist/Actions';
@@ -47,7 +48,8 @@ export default function ShiftItemView({data, index}) {
     } else {
       date_picker = moment(date_picker).format('HH:mm').split(':');
     }
-    let start_hour_working = parseInt(date_picker[0] * 100) + parseInt(date_picker[1]);
+    let start_hour_working =
+      parseInt(date_picker[0] * 100) + parseInt(date_picker[1]);
     dispatch(
       setShift({
         value: {start_hour_working: start_hour_working},
@@ -61,7 +63,8 @@ export default function ShiftItemView({data, index}) {
     } else {
       date_picker = moment(date_picker).format('HH:mm').split(':');
     }
-    let end_hour_working = parseInt(date_picker[0] * 100) + parseInt(date_picker[1]);
+    let end_hour_working =
+      parseInt(date_picker[0] * 100) + parseInt(date_picker[1]);
     dispatch(
       setShift({
         value: {end_hour_working: end_hour_working},
@@ -69,10 +72,37 @@ export default function ShiftItemView({data, index}) {
       }),
     );
   };
+  const showStartTime = () => {
+    DeviceEventEmitter.emit('showDateTimePicker', {
+      showTime: true,
+      showDate: false,
+      onChange: (date_picker) => {
+        setStartTimeShift(date_picker);
+        // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+      },
+    });
+  };
+  const showEndTime = () => {
+    DeviceEventEmitter.emit('showDateTimePicker', {
+      showTime: true,
+      showDate: false,
+      onChange: (date_picker) => {
+        setEndTimeShift(date_picker);
+        // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+      },
+    });
+  };
+  // DeviceEventEmitter.emit('showDateTimePicker', {
+  //   showTime: true,
+  //   onChange: (date) => {
+  //     onSetCurrentTask({end_time: moment(date).format('X')});
+  //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+  //   },
+  // });
   return (
     <View style={styles.container}>
       <>
-        <DateTimePicker
+        {/* <DateTimePicker
           showTime={true}
           visible={state.visible_start_hour_working}
           onChangeText={(date_picker) => setStartTimeShift(date_picker)}
@@ -81,7 +111,7 @@ export default function ShiftItemView({data, index}) {
           showTime={true}
           visible={state.visible_end_hour_working}
           onChangeText={(date_picker) => setEndTimeShift(date_picker)}
-        />
+        /> */}
       </>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <TextInput
@@ -95,27 +125,13 @@ export default function ShiftItemView({data, index}) {
       </TouchableWithoutFeedback>
       {/* <Text>{data.shift_name}</Text> */}
       <View style={styles.time_shift}>
-        <Text
-          style={{fontSize: 18}}
-          onPress={() =>
-            setState({
-              ...state,
-              visible_start_hour_working: state.visible_start_hour_working + 1,
-            })
-          }>
+        <Text style={{fontSize: 18}} onPress={showStartTime}>
           {convertToHour(data.start_hour_working)}
         </Text>
       </View>
       <Text> -:- </Text>
       <View style={styles.time_shift}>
-        <Text
-          style={{fontSize: 18}}
-          onPress={() =>
-            setState({
-              ...state,
-              visible_end_hour_working: state.visible_end_hour_working + 1,
-            })
-          }>
+        <Text style={{fontSize: 18}} onPress={showEndTime}>
           {convertToHour(data.end_hour_working)}
         </Text>
       </View>
