@@ -78,10 +78,8 @@ const GroupDetailScreen = ({route, navigation}) => {
     if (group.group_name) {
       try {
         const data = await BaseApi({collectionName: 'group'}).save(group);
-        // console.log(data);
-
         dispatch(setGroup(data));
-        navigation.navigate('AddMemberScreen');
+        navigation.navigate('AddMemberOptions');
       } catch (error) {
         DeviceEventEmitter.emit('showToast', {
           text: 'Đã có lỗi xảy ra khi lưu nhóm',

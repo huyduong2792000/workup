@@ -17,12 +17,12 @@ import BaseApi from '../../components/common/BaseApi';
 import Contacts from 'react-native-contacts';
 import ListMemberView from '../../components/group/ListMemberView';
 import {setGroup, clearSelectMutipleMember} from '../../store/group/Actions';
-const AddMemberScreen = ({navigation, route}) => {
+const AddMemberFromContactsScreen = ({navigation, route}) => {
   const group = useSelector((state) => state.Group);
   const members_in_select = useSelector((state) => state.MembersInSelect);
   const dispatch = useDispatch();
   const [list_contact, setListContact] = useState([]);
-  const [member_search, setMemberSearch] = useState([]);
+  const [contacts_source, setContactsSource] = useState([]);
   const [isFetching, setFetching] = useState(false);
   navigation.setOptions({
     title: group.group_name,
@@ -34,7 +34,6 @@ const AddMemberScreen = ({navigation, route}) => {
     const unsubscribe = navigation.addListener('blur', () => {
       dispatch(clearSelectMutipleMember());
     });
-
     getContacts();
     return unsubscribe;
   }, []);
@@ -49,6 +48,7 @@ const AddMemberScreen = ({navigation, route}) => {
           if (err === 'denied') {
             // error
           } else {
+            setContactsSource(contacts);
             validListContact(contacts);
           }
         });
@@ -58,68 +58,40 @@ const AddMemberScreen = ({navigation, route}) => {
         if (err === 'denied') {
           // error
         } else {
+          contacts.map((item, index) => {
+            item.displayName = item.familyName + ' ' + item.givenName;
+            return item;
+          });
           validListContact(contacts);
+          setContactsSource(contacts);
         }
       });
     }
   };
   const validListContact = async (contacts) => {
-    if (Platform.OS === 'ios') {
-      contacts.map((item,index)=>{
-        item.displayName = item.familyName + ' ' + item.givenName;
-
-        return item
-      })
-      await BaseApi({collectionName: 'check_user_has_been_account'})
-        .post({contacts, group})
-        .then((respone) => {
-          setListContact([...respone]);
-        });
-    } else {
-      // console.log('else');
-
-      // contacts_valid = [...contacts];
-      await BaseApi({collectionName: 'check_user_has_been_account'})
-        .post({contacts, group})
-        .then((respone) => {
-          setListContact([...respone]);
-        });
-    }
-    // console.log('contacts=========',contacts);
-    // console.log('contact_valid=========',contacts_valid);
-    // console.log('await', contacts_valid);
+    contacts = contacts.slice(0, 50);
+    await BaseApi({collectionName: 'check_user_has_been_account'})
+      .post({contacts, group})
+      .then((respone) => {
+        setListContact([...respone]);
+      });
   };
-  const search = async (searchValue) => {
+  const search = (searchValue) => {
     searchValue = searchValue.toLowerCase();
     if (searchValue !== '') {
-      var data_search_from_list_contact = list_contact.filter((item, index) => {
-        return (
-          item.display_name.toLowerCase().indexOf(searchValue) != -1 ||
-          item.phone.toLowerCase().indexOf(searchValue) != -1
-        );
-      });
-      await BaseApi({collectionName: 'search_user'})
-        .get({
-          filters: {
-            $group_id: group.id,
-            $or: [
-              {unsigned_display_name: {$like: searchValue}},
-              {display_name: {$like: searchValue}},
-              {email: {$like: searchValue}},
-              {phone: {$like: searchValue}},
-            ],
-          },
-        })
-        .then((response) => {
-          let data = response.data;
-          data.objects.map((item, index) => {
-            item.is_select = true;
-            return item;
-          });
-          setMemberSearch([...data.objects, ...data_search_from_list_contact]);
-        });
+      var data_search_from_list_contact = contacts_source.filter(
+        (item, index) => {
+          console.log(item);
+          return (
+            item.displayName.toLowerCase().indexOf(searchValue) !== -1 ||
+            item.phoneNumbers[0].number.toLowerCase().indexOf(searchValue) !==
+              -1
+          );
+        },
+      );
+      validListContact(data_search_from_list_contact);
     } else {
-      setMemberSearch([...list_contact]);
+      getContacts();
     }
   };
   const onConfirm = async () => {
@@ -165,9 +137,7 @@ const AddMemberScreen = ({navigation, route}) => {
         Danh bạ
       </Text>
       <View style={{flex: 1}}>
-        <ListMemberView
-          list_member={member_search.length != 0 ? member_search : list_contact}
-        />
+        <ListMemberView list_member={list_contact} />
       </View>
       <View style={styles.confirmField}>
         <Text style={{color: '#55ABFC', alignItems: 'center'}}>
@@ -198,7 +168,7 @@ const AddMemberScreen = ({navigation, route}) => {
   );
 };
 
-export default AddMemberScreen;
+export default AddMemberFromContactsScreen;
 
 const styles = StyleSheet.create({
   container: {

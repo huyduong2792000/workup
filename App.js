@@ -24,8 +24,9 @@ import LoginScreen from 'screens/LoginScreen';
 
 import GroupCollectionScreen from 'screens/group/GroupCollectionScreen';
 import GroupDetailScreen from 'screens/group/GroupDetailScreen';
+import AddMemberOptions from 'screens/group/AddMemberOptions';
 import ListMemberScreen from 'screens/group/ListMemberScreen';
-import AddMemberScreen from 'screens/group/AddMemberScreen';
+import AddMemberFromContactsScreen from 'screens/group/AddMemberFromContactsScreen';
 
 import TaskScheduleCollectionScreen from 'screens/taskschedule/TaskScheduleCollectionScreen';
 import TaskScheduleDetailScreen from 'screens/taskschedule/TaskScheduleDetailScreen';
@@ -200,7 +201,7 @@ function App(_props) {
               name="GroupCollectionScreen"
               component={GroupCollectionScreen}
               options={{
-                title: 'Tất cả nhóm',
+                title: 'Tất Cả Nhóm',
                 headerStyle: {
                   elevation: 0,
                   // height:70,
@@ -214,14 +215,20 @@ function App(_props) {
               options={{title: 'Nhóm'}}
             />
             <Stack.Screen
+              name="AddMemberOptions"
+              component={AddMemberOptions}
+              options={{title: 'Thêm Thành Viên'}}
+            />
+
+            <Stack.Screen
               name="ListMemberScreen"
               component={ListMemberScreen}
-              options={{title: 'Thành viên'}}
+              options={{title: 'Thành Viên'}}
             />
             <Stack.Screen
-              name="AddMemberScreen"
-              component={AddMemberScreen}
-              options={{title: 'Thêm thành viên'}}
+              name="AddMemberFromContactsScreen"
+              component={AddMemberFromContactsScreen}
+              options={{title: 'Thêm Thành Viên'}}
             />
 
             <Stack.Screen
@@ -237,17 +244,17 @@ function App(_props) {
             <Stack.Screen
               name="TaskDetailScreen"
               component={TaskDetailScreen}
-              options={{title: 'Chi tiết việc'}}
+              options={{title: 'Chi Tiết Việc'}}
             />
             <Stack.Screen
               name="SelectFollowers"
               component={SelectFollowers}
-              options={{title: 'người theo dõi'}}
+              options={{title: 'Người Theo Dõi'}}
             />
             <Stack.Screen
               name="SelectAssignee"
               component={SelectAssignee}
-              options={{title: 'Người giám sát'}}
+              options={{title: 'Người Giám Sát'}}
             />
 
             <Stack.Screen
@@ -264,17 +271,17 @@ function App(_props) {
             <Stack.Screen
               name="TaskInfoDetailScreen"
               component={TaskInfoDetailScreen}
-              options={{title: 'Chi tiết việc'}}
+              options={{title: 'Chi Tiết Việc'}}
             />
             <Stack.Screen
               name="ContainerSelectFollowersTaskInfoScreen"
               component={ContainerSelectFollowersTaskInfoScreen}
-              options={{title: 'người theo dõi'}}
+              options={{title: 'Người Theo Dõi'}}
             />
             <Stack.Screen
               name="ContainerSelectAssigneeTaskinfoScreen"
               component={ContainerSelectAssigneeTaskinfoScreen}
-              options={{title: 'người theo dõi'}}
+              options={{title: 'Người Theo Dõi'}}
             />
           </Stack.Navigator>
         </NavigationContainer>

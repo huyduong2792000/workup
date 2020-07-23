@@ -16,7 +16,7 @@ const ListMemberScreen = ({navigation,route}) => {
         headerRight: () => (
             <View style={{paddingHorizontal:10, position:'relative'}}>
                 <AntDesign 
-                onPress={()=>navigation.navigate('AddMemberScreen',{id:null})}
+                onPress={()=>navigation.navigate('AddMemberFromContactsScreen',{id:null})}
                 name='plus' 
                 size={24} 
                 color = {Colors.tintColor}
