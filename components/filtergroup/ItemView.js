@@ -1,16 +1,46 @@
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, DeviceEventEmitter} from 'react-native';
+import {useSelector} from 'react-redux';
 import Colors from 'constants/Colors';
+import BaseApi from 'common/BaseApi';
 const ItemView = ({data_render}) => {
-  const navigation = useNavigation();
+  const currentUser = useSelector((state) => state.currentUser);
+
+  const onPressJoinGroupButton = async () => {
+    try {
+      let data = {group_id:data_render.id,user_id: currentUser.id};
+      await BaseApi({collectionName: 'join_to_group'}).save(data);
+      DeviceEventEmitter.emit('showToast', {
+        text: 'Vaò nhóm thành công',
+        type: 'success',
+      });
+    } catch (error) {
+      DeviceEventEmitter.emit('showToast', {
+        text: 'Không thể tham gia group này',
+        type: 'danger',
+      });
+    }
+  }
+  
+  const onPressLeaveGroupButton = async () => {
+    try {
+      let data = {group_id:data_render.id,user_id: currentUser.id};
+      await BaseApi({collectionName: 'leave_to_group'}).save(data);
+      DeviceEventEmitter.emit('showToast', {
+        text: 'Rời nhóm thành công',
+        type: 'success',
+      });
+    } catch (error) {
+      DeviceEventEmitter.emit('showToast', {
+        text: 'Đã có lỗi xảy ra',
+        type: 'danger',
+      });
+    }
+  }
+
   return (
-    <View
-      style={styles.container}
-      onPress={() =>
-        navigation.navigate('GroupDetailScreen', {id: data_render.id})
-      }>
+    <View style={styles.container}>
       <View style={styles.avatarContainer}>
         <FontAwesome
           name="group"
@@ -24,9 +54,9 @@ const ItemView = ({data_render}) => {
             <Text style={styles.title}>{data_render.group_name}</Text>
           </View>
           <View style={{position: 'absolute', right: 10, top: 10}}>
-            {data_render.check_current_user_is_admin ||data_render.check_current_user_is_member
-            ?<Text style={{fontSize:16, color: Colors.tintColor}}>Vào nhóm</Text>
-            :<Text style={{fontSize:16, color: '#FF937B'}}>Rời nhóm</Text>
+            {data_render.check_current_user_is_admin || data_render.check_current_user_is_member
+            ?<Text style={{fontSize:16, color: '#FF937B'}} onPress={onPressLeaveGroupButton}>Rời nhóm</Text>
+            :<Text style={{fontSize:16, color: Colors.tintColor}} onPress={onPressJoinGroupButton}>Vào nhóm</Text>
             }
           </View>
           <View style={styles.field}>
