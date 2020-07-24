@@ -41,6 +41,8 @@ import SignUpDisplayName from 'screens/SignUpDisplayName';
 import CheckListDetail from 'screens/checklist/CheckListDetail';
 import ChecklistCollection from 'screens/checklist/ChecklistCollection';
 
+import FilterGroupScreen from 'screens/filtergroup/FilterGroupScreen';
+
 import {setCurrentUser} from 'store/ActionStore';
 import {setCurrentGroup} from 'store/group/Actions';
 
@@ -282,6 +284,12 @@ function App(_props) {
               name="ContainerSelectAssigneeTaskinfoScreen"
               component={ContainerSelectAssigneeTaskinfoScreen}
               options={{title: 'Người Theo Dõi'}}
+            />
+
+            <Stack.Screen
+              name="FilterGroupScreen"
+              component={FilterGroupScreen}
+              options={{title: 'Tìm Group'}}
             />
           </Stack.Navigator>
         </NavigationContainer>

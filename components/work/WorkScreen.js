@@ -53,6 +53,26 @@ export default function WorkScreen(props) {
               +Nhóm
             </Text>
           </View>
+
+
+          <View style={styles.workItem}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('FilterGroupScreen')
+              }}
+              style={styles.iconContainer}>
+              <AntDesign name="search1" size={26} style={styles.icon} />
+            </TouchableOpacity>
+            <Text
+              onPress={() => {
+                navigation.navigate('FilterGroupScreen')
+              }}
+              style={{textAlign: 'center', color: '#8a8a8a'}}>
+              Tìm Nhóm
+            </Text>
+          </View>
+
+
           <View style={styles.workItem}>
             <TouchableOpacity
               onPress={() => navigation.navigate('ChecklistCollection')}
@@ -67,27 +87,9 @@ export default function WorkScreen(props) {
               +Checklist {'\n'}
             </Text>
           </View>
-          {/* <View style={styles.workItem}>
-            <View style={styles.iconContainer}>
-              <FontAwesome
-                name="calendar"
-                size={26}
-                color={'gray'}
-                style={styles.icon}
-              />
-            </View>
-            <Text style={{textAlign: 'center', color: '#8a8a8a'}}>
-              Schedule{'\n'}
-              (sắp ra mắt)
-            </Text>
-          </View> */}
-          {/* <View style={styles.workItem}>
-                        <Ionicons name="ios-cog" size={20} color={'gray'} style={{ textAlign: "center" }} />
-                        <Text style={{ textAlign: "center", color: "#8a8a8a" }}>
-                            Settings{"\n"}
-                            (sắp ra mắt)
-                        </Text>
-                    </View> */}
+
+
+
           <View style={styles.workItem}>
             <TouchableOpacity
               onPress={() => {
@@ -101,7 +103,7 @@ export default function WorkScreen(props) {
                 logoutProcess();
               }}
               style={{textAlign: 'center', color: '#8a8a8a'}}>
-              đăng xuất
+              Đăng xuất
             </Text>
           </View>
         </View>

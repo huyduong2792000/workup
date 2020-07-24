@@ -118,51 +118,49 @@ class SearchBar extends Component {
     }
 
     return (
-      <View onPress={() => console.log('press')}>
-        <View style={container}>
-          <View style={leftIconStyle}>
-            <AntDesign
-              name="search1"
-              size={18}
-              style={{alignSelf: 'center', paddingHorizontal: 10}}
-            />
-          </View>
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <TextInput
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
-              onChangeText={this.onChangeText}
-              placeholder={searchPlaceholder}
-              style={inputStyleCollection}
-              placeholderTextColor="#515151"
-              autoCorrect={false}
-              ref={(ref) => {
-                this.input = ref;
-              }}
-            />
-          </TouchableWithoutFeedback>
-          <View style={rightContainer}>
-            {hasFocus && showLoader ? (
-              <ActivityIndicator
-                key="loading"
-                style={activityIndicator}
-                color="#515151"
+      <TouchableWithoutFeedback onPress={this.focus} style={style}>        
+        <Animated.View style={container}>
+            <View style={leftIconStyle}>
+              <AntDesign
+                name="search1"
+                size={20}
+                style={{alignSelf: 'center'}}
               />
-            ) : (
-              <View />
-            )}
-            {hasFocus && !isEmpty ? (
-              <TouchableOpacity onPress={this.clear}>
-                <View style={rightIconStyle}>
-                  <Text>ⅹ</Text>
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <View />
-            )}
-          </View>
-        </View>
-      </View>
+            </View>
+              <TextInput
+                onFocus={this.onFocus}
+                onBlur={this.onBlur}
+                onChangeText={this.onChangeText}
+                placeholder={searchPlaceholder}
+                style={inputStyleCollection}
+                placeholderTextColor="#515151"
+                autoCorrect={false}
+                ref={(ref) => {
+                  this.input = ref;
+                }}
+              />
+            <View style={rightContainer}>
+              {hasFocus && showLoader ? (
+                <ActivityIndicator
+                  key="loading"
+                  style={activityIndicator}
+                  color="#515151"
+                />
+              ) : (
+                <View />
+              )}
+              {hasFocus && !isEmpty ? (
+                <TouchableOpacity onPress={this.clear}>
+                  <View style={rightIconStyle}>
+                    <Text style={{fontSize: 18, alignSelf: 'center'}}>ⅹ</Text>
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <View />
+              )}
+            </View>
+          </Animated.View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -172,8 +170,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 5,
     backgroundColor: '#ddd',
-    marginLeft: 10,
-    marginRight: 10,
+    // marginLeft: 10,
+    // marginRight: 10,
     marginBottom: 5,
     marginTop: 5,
     flexDirection: 'row',
@@ -184,12 +182,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: 5,
     height: 40,
-    fontSize: 14,
+    fontSize: 16,
   },
   leftIconStyle: {
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     marginLeft: 8,
   },
   rightContainer: {
