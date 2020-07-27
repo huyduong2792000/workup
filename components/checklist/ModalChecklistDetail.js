@@ -1,17 +1,19 @@
-import React from 'react'
-import { StyleSheet, Text, View,TouchableOpacity,Dimensions, ScrollView,FlatList } from 'react-native'
+import React, {useEffect, useRef} from 'react'
+import { StyleSheet, Text, View,TouchableOpacity,Dimensions, ScrollView,FlatList, DeviceEventEmitter } from 'react-native'
 import Modal from 'react-native-modal';
 import { useSelector,useDispatch } from 'react-redux'
 import {setChecklist,saveChecklist} from 'store/checklist/Actions'
 import ChecklistName from './ChecklistName'
 import Schedule from './Schedule'
 import Shift from './Shift'
+import DateTimePickerField from './DateTimePickerField'
 const WIDTH = Dimensions.get('window').width
 const ModalChecklistDetail = (props) => {
     const task_info = useSelector(state => state.TaskInfo)    
     const Checklist = useSelector(state => state.Checklist)   
     const currentGroupSelect = useSelector(state => state.currentGroupSelect)
- 
+    const date_time_picker = React.useRef(null);
+
     const {visible,setVisible} = {...props}   
     const dispatch = useDispatch()      
     const onSaveChecklist = () =>{
@@ -40,6 +42,23 @@ const ModalChecklistDetail = (props) => {
         }
         setVisible(!visible)
     }
+    const showDateTimePicker = (params) => {
+        params = {
+          ...{
+            showDate: true,
+            showTime: false,
+            value: new Date(),
+            onChange: () => {},
+          },
+          ...params,
+        };
+        date_time_picker.current.open(params);
+      };
+    useEffect(()=>{
+        DeviceEventEmitter.addListener('showDateTimePickerShiftItemView', (e) => {
+            showDateTimePicker(e);
+        });
+    },[])
     return (
         <Modal
             isVisible={visible}
@@ -51,6 +70,8 @@ const ModalChecklistDetail = (props) => {
             >
             <View style={{flex:1}}>
                 <TouchableOpacity onPress={()=>onDissmiss()} style={{flex:1}}></TouchableOpacity>
+                <DateTimePickerField ref={date_time_picker} />
+
                 <View style={styles.container}>
                     <FlatList
                     keyExtractor={(item,index)=>JSON.stringify(index)}

@@ -11,16 +11,12 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {setShift, removeShift} from 'store/checklist/Actions';
-import DateTimePickerField from './DateTimePickerField';
+// import DateTimePickerField from './DateTimePickerField';
 import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function ShiftItemView({data, index}) {
-  const [state, setState] = useState({
-    visible_start_hour_working: 0,
-    visible_end_hour_working: 0,
-  });
-  const date_time_picker = React.useRef(null);
+  // const date_time_picker = React.useRef(null);
 
   const dispatch = useDispatch();
 
@@ -72,65 +68,49 @@ export default function ShiftItemView({data, index}) {
       }),
     );
   };
-  const showStartTime = () => {
-    // date_time_picker.current.open({
-    //   showTime: true,
-    //   showDate: false,
-    //   value: new Date(),
-    //   onChange: (date_picker) => {
-    //     setStartTimeShift(date_picker);
-    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
-    //   },
-    // });
-    // date_time_picker.current.close();
-
+  const showStartTime = () =>{
     DeviceEventEmitter.emit('showDateTimePickerShiftItemView', {
       showTime: true,
       showDate: false,
       onChange: (date_picker) => {
         setStartTimeShift(date_picker);
+        // date_time_picker.current.close();
         // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
       },
     });
   };
   const showEndTime = () => {
-    // date_time_picker.current.open({
-    //   showTime: true,
-    //   showDate: false,
-    //   value: new Date(),
-    //   onChange: (date_picker) => {
-    //     setEndTimeShift(date_picker);
-    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
-    //   },
-    // });
     DeviceEventEmitter.emit('showDateTimePickerShiftItemView', {
       showTime: true,
       showDate: false,
       onChange: (date_picker) => {
         setEndTimeShift(date_picker);
+        // date_time_picker.current.close();
         // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
       },
     });
-
-    // date_time_picker.current.close();
-    // DeviceEventEmitter.emit('showDateTimePicker', {
-    //   showTime: true,
-    //   showDate: false,
-    //   onChange: (date_picker) => {
-    //     setEndTimeShift(date_picker);
-    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
-    //   },
-    // });
   };
+  // const showDateTimePicker = (params) => {
+  //   params = {
+  //     ...{
+  //       showDate: true,
+  //       showTime: false,
+  //       value: new Date(),
+  //       onChange: () => {},
+  //     },
+  //     ...params,
+  //   };
+  //   date_time_picker.current.open(params);
+  // };
   useEffect(() => {
-    DeviceEventEmitter.addListener('showDateTimePickerShiftItemView', (e) => {
-      showDateTimePicker(e);
-    });
-  })
+    // DeviceEventEmitter.addListener('showDateTimePickerShiftItemView', (e) => {
+    //   showDateTimePicker(e);
+    // });
+  },[]);
   return (
     <View style={styles.container}>
       {/* <> */}
-      <DateTimePickerField ref={date_time_picker} />
+      {/* <DateTimePickerField ref={date_time_picker} /> */}
       {/* </> */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <TextInput

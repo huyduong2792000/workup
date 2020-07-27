@@ -17,7 +17,7 @@ export default class DateTimePickerField extends Component {
             showTime: false
         }
     }
-    open = ({showDate = true,showTime = false,value = new Date(),onChange=()=>{}}) => { 
+    open = ({showDate = true,showTime = false,value = new Date(),onChange=()=>{}}) => {        
         Keyboard.dismiss()
         if(typeof(value) === 'number'){            
             value = new Date(value * 1000)
@@ -41,16 +41,16 @@ export default class DateTimePickerField extends Component {
             this.state.onChange(selectedDate)
             if(this.state.showDate && this.state.showTime){
                 this.setState({mode:'time',showTime:false,value:selectedDate})
+                
             }
             if(Platform.OS === 'ios'){
             }else{
-                // console.log("vlosessssssssssssssss");
                 this.close()
             }
         }
     };
     render() {
-        
+        console.log(this.state.show);
         if(this.state.show){
             return (
                 <>
