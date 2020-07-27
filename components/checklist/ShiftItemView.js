@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {setShift, removeShift} from 'store/checklist/Actions';
-import DateTimePicker from './DateTimePicker';
+import DateTimePickerField from './DateTimePickerField';
 import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -20,7 +20,7 @@ export default function ShiftItemView({data, index}) {
     visible_start_hour_working: 0,
     visible_end_hour_working: 0,
   });
-  // const [visible_start_hour_working,setVisibleStartHourWorking] = useState(0)
+  const date_time_picker = React.useRef(null);
 
   const dispatch = useDispatch();
 
@@ -73,7 +73,18 @@ export default function ShiftItemView({data, index}) {
     );
   };
   const showStartTime = () => {
-    DeviceEventEmitter.emit('showDateTimePicker', {
+    // date_time_picker.current.open({
+    //   showTime: true,
+    //   showDate: false,
+    //   value: new Date(),
+    //   onChange: (date_picker) => {
+    //     setStartTimeShift(date_picker);
+    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+    //   },
+    // });
+    // date_time_picker.current.close();
+
+    DeviceEventEmitter.emit('showDateTimePickerShiftItemView', {
       showTime: true,
       showDate: false,
       onChange: (date_picker) => {
@@ -83,7 +94,16 @@ export default function ShiftItemView({data, index}) {
     });
   };
   const showEndTime = () => {
-    DeviceEventEmitter.emit('showDateTimePicker', {
+    // date_time_picker.current.open({
+    //   showTime: true,
+    //   showDate: false,
+    //   value: new Date(),
+    //   onChange: (date_picker) => {
+    //     setEndTimeShift(date_picker);
+    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+    //   },
+    // });
+    DeviceEventEmitter.emit('showDateTimePickerShiftItemView', {
       showTime: true,
       showDate: false,
       onChange: (date_picker) => {
@@ -91,28 +111,27 @@ export default function ShiftItemView({data, index}) {
         // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
       },
     });
+
+    // date_time_picker.current.close();
+    // DeviceEventEmitter.emit('showDateTimePicker', {
+    //   showTime: true,
+    //   showDate: false,
+    //   onChange: (date_picker) => {
+    //     setEndTimeShift(date_picker);
+    //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
+    //   },
+    // });
   };
-  // DeviceEventEmitter.emit('showDateTimePicker', {
-  //   showTime: true,
-  //   onChange: (date) => {
-  //     onSetCurrentTask({end_time: moment(date).format('X')});
-  //     // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
-  //   },
-  // });
+  useEffect(() => {
+    DeviceEventEmitter.addListener('showDateTimePickerShiftItemView', (e) => {
+      showDateTimePicker(e);
+    });
+  })
   return (
     <View style={styles.container}>
-      <>
-        {/* <DateTimePicker
-          showTime={true}
-          visible={state.visible_start_hour_working}
-          onChangeText={(date_picker) => setStartTimeShift(date_picker)}
-        />
-        <DateTimePicker
-          showTime={true}
-          visible={state.visible_end_hour_working}
-          onChangeText={(date_picker) => setEndTimeShift(date_picker)}
-        /> */}
-      </>
+      {/* <> */}
+      <DateTimePickerField ref={date_time_picker} />
+      {/* </> */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <TextInput
           style={styles.shift_name}
