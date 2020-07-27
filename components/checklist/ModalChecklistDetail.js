@@ -43,6 +43,7 @@ const ModalChecklistDetail = (props) => {
         setVisible(!visible)
     }
     const showDateTimePicker = (params) => {
+        console.log('showDateTimePicker');
         params = {
           ...{
             showDate: true,

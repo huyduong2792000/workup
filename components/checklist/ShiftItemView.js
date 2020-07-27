@@ -102,16 +102,8 @@ export default function ShiftItemView({data, index}) {
   //   };
   //   date_time_picker.current.open(params);
   // };
-  useEffect(() => {
-    // DeviceEventEmitter.addListener('showDateTimePickerShiftItemView', (e) => {
-    //   showDateTimePicker(e);
-    // });
-  },[]);
   return (
     <View style={styles.container}>
-      {/* <> */}
-      {/* <DateTimePickerField ref={date_time_picker} /> */}
-      {/* </> */}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <TextInput
           style={styles.shift_name}
