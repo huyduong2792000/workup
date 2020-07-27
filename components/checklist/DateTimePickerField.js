@@ -38,7 +38,12 @@ export default class DateTimePickerField extends Component {
         this.setState({show:false})
     }
     onChange = (event, selectedDate) => {
-        this.setState({show:false})
+        if (Platform.OS === 'ios'){
+            this.setState({value:selectedDate})
+        }else{
+            this.setState({show:false})
+            // this.state.onChange(selectedDate)
+        }
         this.state.onChange(selectedDate)
         // this.close()
         // if(selectedDate!=undefined && event.type !== 'dismissed'){                        
