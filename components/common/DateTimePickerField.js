@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Platform, TouchableOpacity,Keyboard } from 'react-native';
+import { View, Platform, TouchableOpacity, Keyboard } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment'
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 
@@ -12,45 +12,52 @@ export default class DateTimePickerField extends Component {
             value: new Date(),
             show: false,
             mode: 'date',
-            onChange: ()=>{},
+            onChange: () => { },
             showDate: true,
             showTime: false
         }
     }
-    open = ({showDate = true,showTime = false,value = new Date(),onChange=()=>{}}) => {        
+
+    timestampToObject = (time) => {
+        return moment(time).local().toObject()
+    }
+
+    open = ({ showDate = true, showTime = false, value = new Date(), onChange = () => { } }) => {
         Keyboard.dismiss()
-        if(typeof(value) === 'number'){            
-            value = new Date(value * 1000)
+
+        if (typeof (value) === 'number') {
+            let momentObject = this.timestampToObject(value * 1000);
+            value = new Date(momentObject.years, momentObject.months, momentObject.date, momentObject.hours + 7, momentObject.minutes, momentObject.seconds);
         }
-        if(!value){
+        if (!value) {
             value = new Date()
-        }        
-        if(showDate){
-            this.setState({show:true,showDate:showDate,showTime:showTime,value:value,onChange:onChange,mode:'date'})
-        }else if(showTime){
-            this.setState({show:true,showDate:showDate,showTime:showTime,value:value,onChange:onChange,mode:'time'})
-        }else{
-            
+        }
+        if (showDate) {
+            this.setState({ show: true, showDate: showDate, showTime: showTime, value: value, onChange: onChange, mode: 'date' })
+        } else if (showTime) {
+            this.setState({ show: true, showDate: showDate, showTime: showTime, value: value, onChange: onChange, mode: 'time' })
+        } else {
+
         }
     }
     close = () => {
-        this.setState({show:false})
+        this.setState({ show: false })
     }
     onChange = (event, selectedDate) => {
-        if(selectedDate!=undefined && event.type !== 'dismissed'){                        
+        if (selectedDate != undefined && event.type !== 'dismissed') {
             this.state.onChange(selectedDate)
-            if(this.state.showDate && this.state.showTime){
-                this.setState({mode:'time',showTime:false,value:selectedDate})
-                if(Platform.OS === 'ios'){
-                }else{
+            if (this.state.showDate && this.state.showTime) {
+                this.setState({ mode: 'time', showTime: false, value: selectedDate })
+                if (Platform.OS === 'ios') {
+                } else {
                     this.close()
                 }
             }
         }
     };
     render() {
-        
-        if(this.state.show){
+
+        if (this.state.show) {
             return (
                 <>
                     {Platform.OS === 'ios' ?
@@ -61,7 +68,7 @@ export default class DateTimePickerField extends Component {
                                 this.onChange()
                                 this.close()
                             }}
-                            style={{ margin: 0}}
+                            style={{ margin: 0 }}
                             isVisible={this.state.show}>
                             <View style={{ flex: 1 }}>
                                 <TouchableOpacity
@@ -71,6 +78,7 @@ export default class DateTimePickerField extends Component {
                                     style={{ flex: 1 }}></TouchableOpacity>
                                 <View style={{ backgroundColor: 'white' }}>
                                     <DateTimePicker
+                                        // locale="vi-VN"
                                         style={{ backgroundColor: 'white' }}
                                         testID="dateTimePicker"
                                         timeZoneOffsetInMinutes={0}
@@ -99,11 +107,11 @@ export default class DateTimePickerField extends Component {
                         </View>}
                 </>
             );
-        }else{
+        } else {
             return (<></>)
         }
-            
-        
+
+
     }
 };
 

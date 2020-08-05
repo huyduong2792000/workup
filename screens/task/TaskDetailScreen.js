@@ -102,7 +102,7 @@ const TaskDetailScreen = ({navigation, route}) => {
         followers: [currentUser],
         status: 0,
         note: '',
-        task_code: null,
+        task_code: null
       };
       onSetCurrentTask(init_reducer);
       // dispatch(setCurrentTask(init_reducer))
@@ -126,8 +126,14 @@ const TaskDetailScreen = ({navigation, route}) => {
   const onPressDealine = () => {
     DeviceEventEmitter.emit('showDateTimePicker', {
       showTime: true,
+      // showDate: false,
+      value: current_task.end_time,
       onChange: (date) => {
-        onSetCurrentTask({end_time: moment(date).format('X')});
+        // console.log("SELECTED ", date);
+        const deadlineTime = moment(date, "YYYY-MM-DDTHH:mm:ss.f").unix() - (7 * 3600);
+        // console.log("deadlineTime ", deadlineTime);
+        onSetCurrentTask({end_time: deadlineTime });
+        // onSetCurrentTask({end_time: moment(date).format('X') });
         // dispatch(setCurrentTask({end_time:moment(date).format("X")}))
       },
     });
@@ -163,18 +169,13 @@ const TaskDetailScreen = ({navigation, route}) => {
     dispatch(setCurrentTask(data));
   };
   const displayDealine = () => {
-    let dealine = current_task.end_time;
-    if (dealine) {
+    let dealine = '';
+    if (current_task.end_time) {
       if (Platform.OS === 'ios') {
-        dealine = moment
-          .unix(current_task.end_time)
-          .utc()
-          .format('DD-MM-YY HH:mm ');
+        dealine = moment(current_task.end_time * 1000).local().format('DD-MM-YYYY HH:mm');
       } else {
-        dealine = moment.unix(current_task.end_time).format('DD-MM-YY HH:mm ');
+        dealine = moment.unix(current_task.end_time).format('DD-MM-YY HH:mm');
       }
-    } else {
-      dealine = '';
     }
     return dealine;
   };

@@ -46,7 +46,7 @@ const Navigator = () => {
         name="menu"
         component={WorkScreen}
         options={{
-          tabBarLabel: <Text style={{paddingTop: 3}}>menu</Text>,
+          tabBarLabel: <Text style={{paddingTop: 3}}>Menu</Text>,
           tabBarIcon: ({focused}) => (
             <View style={{width: 50, justifyContent: 'center'}}>
               <MaterialCommunityIcons

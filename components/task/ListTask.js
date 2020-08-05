@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import ItemView from './ItemView';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const ListTask = ({data_render, setDone, onRefresh}) => {
+import moment from 'moment';
+
+const ListTask = ({ data_render, setDone, onRefresh }) => {
   const [taskStatus, setTaskStatus] = useState({
     tasks_schedule: [],
     task_behind_schedule: [],
@@ -20,7 +22,7 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
     const tasks_schedule = [];
     const tasks_no_schedule = [];
     const tasks_done = [];
-    const time_compare_task_behind = Math.floor(Date.now() / 1000);
+    const time_compare_task_behind = Math.floor(moment.now() / 1000);
     for (var task of data_render) {
       if (task.end_time != null && task.status === 0) {
         if (task.end_time >= time_compare_task_behind) {
@@ -57,8 +59,8 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
             }
             style={
               taskStatus.task_behind_schedule.length !== 0
-                ? {...styles.title}
-                : {display: 'none'}
+                ? { ...styles.title }
+                : { display: 'none' }
             }>
             Đã trễ hạn
             <AntDesign name="caretright" size={10} />{' '}
@@ -66,13 +68,13 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
           <View
             style={
               taskShowMode.task_behind_schedule
-                ? {...styles.tasks_style}
-                : {display: 'none'}
+                ? { ...styles.tasks_style }
+                : { display: 'none' }
             }>
             <FlatList
               data={taskStatus.task_behind_schedule}
               keyExtractor={(item) => item.id}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <ItemView
                     setDone={setDone}
@@ -92,8 +94,8 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
             }
             style={
               taskStatus.tasks_schedule.length !== 0
-                ? {...styles.title}
-                : {display: 'none'}
+                ? { ...styles.title }
+                : { display: 'none' }
             }>
             Có lịch
             <AntDesign
@@ -108,13 +110,13 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
           <View
             style={
               taskShowMode.tasks_schedule
-                ? {...styles.tasks_style}
-                : {display: 'none'}
+                ? { ...styles.tasks_style }
+                : { display: 'none' }
             }>
             <FlatList
               data={taskStatus.tasks_schedule}
               keyExtractor={(item) => item.id}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <ItemView
                     setDone={setDone}
@@ -134,8 +136,8 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
             }
             style={
               taskStatus.tasks_no_schedule.length !== 0
-                ? {...styles.title}
-                : {display: 'none'}
+                ? { ...styles.title }
+                : { display: 'none' }
             }>
             Không có hạn chót
             <AntDesign
@@ -150,13 +152,13 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
           <View
             style={
               taskShowMode.tasks_no_schedule
-                ? {...styles.tasks_style}
-                : {display: 'none'}
+                ? { ...styles.tasks_style }
+                : { display: 'none' }
             }>
             <FlatList
               data={taskStatus.tasks_no_schedule}
               keyExtractor={(item) => item.id}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <ItemView
                     setDone={setDone}
@@ -176,8 +178,8 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
             }
             style={
               taskStatus.tasks_done.length !== 0
-                ? {...styles.title}
-                : {display: 'none'}
+                ? { ...styles.title }
+                : { display: 'none' }
             }>
             Đã xong
             <AntDesign
@@ -190,13 +192,13 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
           <View
             style={
               taskShowMode.tasks_done
-                ? {...styles.tasks_style}
-                : {display: 'none'}
+                ? { ...styles.tasks_style }
+                : { display: 'none' }
             }>
             <FlatList
               data={taskStatus.tasks_done}
               keyExtractor={(item) => item.id}
-              renderItem={({item}) => {
+              renderItem={({ item }) => {
                 return (
                   <ItemView
                     setDone={setDone}
@@ -209,7 +211,7 @@ const ListTask = ({data_render, setDone, onRefresh}) => {
           </View>,
         ]}
         keyExtractor={(item, index) => JSON.stringify(index)}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return item;
         }}
       />
